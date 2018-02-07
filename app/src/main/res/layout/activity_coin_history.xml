@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ecmdapps.mypesa.CoinHistoryActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/cMore">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cTotalCapLabel"
+                android:text="@string/cTotalCap"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cTotalCap"/>
+        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/cProgress"
+            android:layout_width="match_parent"
+            android:layout_height="400dip"
+            android:visibility="gone" />
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/cGraph"
+            android:visibility="gone" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
