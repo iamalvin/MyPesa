@@ -1,13 +1,9 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.ecmdapps.mypesa.MainActivity">
-    <item
-        android:id="@+id/action_all_currencies"
-        android:orderInCategory="30"
-        app:showAsAction="ifRoom"
-        android:title="@string/action_all_currencies" />
-
+    tools:context="com.ecmdapps.mypesa.AvailableCryptosActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="99"
@@ -19,5 +15,4 @@
         android:orderInCategory="100"
         app:showAsAction="never"
         android:title="@string/action_refresh" />
-
 </menu>

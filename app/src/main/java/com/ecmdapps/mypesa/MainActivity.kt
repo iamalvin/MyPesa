@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         loadMyCoins()
         fab.setOnClickListener { viewAllCrypto() }
+        refresh.setOnRefreshListener { loadMyCoins() }
     }
 
 
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> true
             R.id.action_all_currencies -> { viewAllCrypto(); true }
+            R.id.action_refresh -> { loadMyCoins(); true}
             else -> super.onOptionsItemSelected(item)
         }
     }

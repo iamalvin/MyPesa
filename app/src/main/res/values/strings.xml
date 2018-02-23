@@ -17,4 +17,5 @@
     <string name="CoinHistoryActivityClassName">CoinHistoryActivity</string>
     <string name="stopFollowing">Stop Following</string>
     <string name="startFollowing">Follow</string>
+    <string name="action_refresh">Refresh</string>
 </resources>

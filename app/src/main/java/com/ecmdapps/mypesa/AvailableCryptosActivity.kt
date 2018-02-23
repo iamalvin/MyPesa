@@ -2,6 +2,8 @@ package com.ecmdapps.mypesa
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import kotlinx.android.synthetic.main.content_main.*
 import java.util.*
 
@@ -14,6 +16,7 @@ class AvailableCryptosActivity : AppCompatActivity() {
         setContentView(R.layout.activity_available_cryptos)
         cryptos = Cryptos(this, getString(R.string.AvailableCryptosActivityClassName))
         loadCoins(savedInstanceState)
+        refresh.setOnRefreshListener { cryptos.loadAvailableCoins() }
     }
 
     override fun onSaveInstanceState(bundle: Bundle?) {
@@ -34,5 +37,16 @@ class AvailableCryptosActivity : AppCompatActivity() {
         lvCoins.adapter = coinListAdapter
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_available_cryptos, menu)
+        return true
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> true
+            R.id.action_refresh -> { cryptos.loadAvailableCoins(); true}
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }
