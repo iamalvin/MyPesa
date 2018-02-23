@@ -4,10 +4,12 @@ import android.os.Parcel
 import android.os.Parcelable
 
 
-class Coin(val name: String, val id: String, val value: Double, val mktCap: Double, val percentChange: Double) : Parcelable {
+class Coin(val name: String, val id: String, val value: Double,  val valueUSD: Double, val mktCap: Double, val mktCapUSD: Double, val percentChange: Double) : Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),
+            parcel.readDouble(),
+            parcel.readDouble(),
             parcel.readDouble(),
             parcel.readDouble(),
             parcel.readDouble())
@@ -16,7 +18,9 @@ class Coin(val name: String, val id: String, val value: Double, val mktCap: Doub
         parcel.writeString(name)
         parcel.writeString(id)
         parcel.writeDouble(value)
+        parcel.writeDouble(valueUSD)
         parcel.writeDouble(mktCap)
+        parcel.writeDouble(mktCapUSD)
         parcel.writeDouble(percentChange)
     }
 

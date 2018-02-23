@@ -131,7 +131,7 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
             else -> o.get("mktcap") as Double
         }
 
-        return Coin(o["long"] as String, o["short"] as String, (oPrice * rate!!.rate), ( oMktCap * rate!!.rate), oPerc)
+        return Coin(o["long"] as String, o["short"] as String, (oPrice * rate!!.rate), oPrice, ( oMktCap * rate!!.rate), oMktCap, oPerc)
     }
 
     private fun displayCoinList(coinList: ArrayList<Coin>) {

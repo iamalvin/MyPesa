@@ -32,10 +32,6 @@ class CoinsDatabaseHandler(context: Context) {
         return db!!.delete(dbTable, selection, selectionArgs)
     }
 
-    /*fun close() {
-        db?.close()
-    }*/
-
     init {
         val dbHelper = DatabaseHelper(context)
         db = dbHelper.writableDatabase

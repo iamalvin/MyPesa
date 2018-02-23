@@ -16,13 +16,24 @@ class CoinHistoryActivity : AppCompatActivity() {
         super.onCreate(bundle)
         setContentView(R.layout.activity_coin_history)
 
+        var currentFormat = "local"
         val localeCountryCode = "KE"
         val format = NumberFormat.getCurrencyInstance(Locale("", localeCountryCode))
+        val usFormat = NumberFormat.getCurrencyInstance(Locale("", "US"))
 
         val coin : Coin = intent.getParcelableExtra("coin")
         cProgress.visibility = View.VISIBLE
         cTotalCap.text = format.format(coin.mktCap)
-
+        cTotalCap.setOnClickListener {
+            if (currentFormat == "local") {
+                cTotalCap.text = usFormat.format(coin.mktCapUSD)
+                currentFormat = "USD"
+            }
+            else {
+                cTotalCap.text = usFormat.format(coin.mktCap)
+                currentFormat = "local"
+            }
+        }
         Cryptos(this, getString(R.string.CoinHistoryActivityClassName)).loadCoinGraph(coin)
         title = coin.name
     }
