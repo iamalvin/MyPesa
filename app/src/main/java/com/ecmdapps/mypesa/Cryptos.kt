@@ -199,6 +199,15 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
         }
     }
 
+    fun loadCoinGraph(coin: Coin, currencyFormat:String) {
+        currentCoin = coin
+        if (rate == null || ((rate!!.lastChanged - (System.currentTimeMillis()/1000)) > (5 * 60))){
+            GetExchangeRate(this).execute(exchangeCurrencyPair)
+        } else {
+            GetHistoricalCoinData(this, currencyFormat).execute(coin.id)
+        }
+    }
+
     companion object {
         class GetExchangeRate(private val cryptos: Cryptos) : AsyncTask<String, Int, Long>() {
             override fun doInBackground(vararg params: String?): Long {
@@ -223,9 +232,10 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
             }
         }
 
-        class GetHistoricalCoinData(private val cryptos: Cryptos) : AsyncTask<String, Int, Long>() {
+        class GetHistoricalCoinData(private val cryptos: Cryptos, private val currencyFormat: String = "local") : AsyncTask<String, Int, Long>() {
             private lateinit var priceList: Array<DataPoint>
             private var requestQueue = Volley.newRequestQueue(cryptos.context)
+
             override fun doInBackground(vararg params: String?): Long {
                 val count = params.size
                 val totalSize = 0L
@@ -261,7 +271,12 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
                         }
                         else -> historyArray[1] as Double
                     }
-                    points[i] = DataPoint(histDate, (histPrice * cryptos.rate!!.rate))
+
+                    if (currencyFormat == "local"){
+                        points[i] = DataPoint(histDate, (histPrice * cryptos.rate!!.rate))
+                    } else {
+                        points[i] = DataPoint(histDate, (histPrice))
+                    }
                 }
 
                 @Suppress("UNCHECKED_CAST")

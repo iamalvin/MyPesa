@@ -16,6 +16,8 @@ class CoinHistoryActivity : AppCompatActivity() {
         super.onCreate(bundle)
         setContentView(R.layout.activity_coin_history)
 
+        val cryptos = Cryptos(this, getString(R.string.CoinHistoryActivityClassName))
+
         var currentFormat = "local"
         val localeCountryCode = "KE"
         val format = NumberFormat.getCurrencyInstance(Locale("", localeCountryCode))
@@ -28,13 +30,15 @@ class CoinHistoryActivity : AppCompatActivity() {
             if (currentFormat == "local") {
                 cTotalCap.text = usFormat.format(coin.mktCapUSD)
                 currentFormat = "USD"
+                cryptos.loadCoinGraph(coin, currentFormat)
             }
             else {
                 cTotalCap.text = usFormat.format(coin.mktCap)
                 currentFormat = "local"
+                cryptos.loadCoinGraph(coin, currentFormat)
             }
         }
-        Cryptos(this, getString(R.string.CoinHistoryActivityClassName)).loadCoinGraph(coin)
+        cryptos.loadCoinGraph(coin)
         title = coin.name
     }
 
