@@ -18,4 +18,10 @@
     <string name="stopFollowing">Stop Following</string>
     <string name="startFollowing">Follow</string>
     <string name="action_refresh">Refresh</string>
+    <string name="cGraphMaxTitle">Max</string>
+    <string name="cGraphDayTitle">Last Day</string>
+    <string name="cGraphWeekTitle">Last Week</string>
+    <string name="cGraphMonthTitle">Last Month</string>
+    <string name="cGraphQuarterTitle">Last Quarter</string>
+    <string name="cGraphYearTitle">Last Year</string>
 </resources>

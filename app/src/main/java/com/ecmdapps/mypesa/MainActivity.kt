@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.util.*
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             loadMyCoins()
         }
 
+        contentProgressBar.visibility = View.VISIBLE
         cryptos.loadCoins(coinIdList)
     }
 
@@ -58,6 +60,7 @@ class MainActivity : AppCompatActivity() {
 
 
     fun displayCoins(coinList: ArrayList<Coin>) {
+        contentProgressBar.visibility = View.GONE
         val coinListAdapter = CoinListAdapter(this, coinList)
         lvCoins.adapter = coinListAdapter
     }

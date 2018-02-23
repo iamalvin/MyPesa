@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import kotlinx.android.synthetic.main.activity_available_cryptos.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.util.*
 
@@ -29,10 +31,12 @@ class AvailableCryptosActivity : AppCompatActivity() {
             val cl = savedInstanceState.getParcelableArrayList<Coin>("coinList")
             displayCoins(cl)
         }
+        contentProgressBar.visibility = View.VISIBLE
         cryptos.loadAvailableCoins()
     }
 
     fun displayCoins(coinList: ArrayList<Coin>) {
+        contentProgressBar.visibility = View.GONE
         val coinListAdapter = CoinListAdapter(this, coinList)
         lvCoins.adapter = coinListAdapter
     }

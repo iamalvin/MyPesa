@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,6 +10,107 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/cMore">
+        <ProgressBar
+            android:id="@+id/cProgress"
+            android:layout_width="match_parent"
+            android:layout_height="40dip"
+            android:visibility="gone" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/graphTitles"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cGraphDayTitle"
+                android:text="@string/cGraphDayTitle"
+                android:visibility="gone"
+                android:padding="4dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/back"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cGraphWeekTitle"
+                android:text="@string/cGraphWeekTitle"
+                android:visibility="gone"
+                android:padding="4dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/back"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cGraphMonthTitle"
+                android:text="@string/cGraphMonthTitle"
+                android:visibility="gone"
+                android:padding="4dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/back"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cGraphQuarterTitle"
+                android:text="@string/cGraphQuarterTitle"
+                android:visibility="gone"
+                android:padding="4dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/back"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cGraphYearTitle"
+                android:text="@string/cGraphYearTitle"
+                android:visibility="gone"
+                android:padding="4dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/back"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cGraphMaxTitle"
+                android:text="@string/cGraphMaxTitle"
+                android:visibility="gone"
+                android:padding="4dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/back"
+                />
+        </LinearLayout>
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/cGraphDay"
+            android:visibility="gone" />
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/cGraphWeek"
+            android:visibility="gone" />
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/cGraphMonth"
+            android:visibility="gone" />
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/cGraphQuarter"
+            android:visibility="gone" />
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/cGraphYear"
+            android:visibility="gone" />
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/cGraphMax"
+            android:visibility="gone" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,15 +125,5 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/cTotalCap"/>
         </LinearLayout>
-        <ProgressBar
-            android:id="@+id/cProgress"
-            android:layout_width="match_parent"
-            android:layout_height="400dip"
-            android:visibility="gone" />
-        <com.jjoe64.graphview.GraphView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/cGraph"
-            android:visibility="gone" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

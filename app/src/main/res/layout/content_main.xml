@@ -4,19 +4,8 @@
     android:id="@+id/refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/cryptoHolder">
-        <ProgressBar
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            android:id="@+id/contentProgressBar"/>
         <ListView
             android:id="@+id/lvCoins"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </LinearLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

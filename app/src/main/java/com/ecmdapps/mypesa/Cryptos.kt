@@ -3,7 +3,6 @@ package com.ecmdapps.mypesa
 import android.content.Context
 import android.os.AsyncTask
 import android.util.Log
-import android.view.View
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
@@ -11,7 +10,6 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.firebase.database.*
 import com.jjoe64.graphview.series.DataPoint
-import kotlinx.android.synthetic.main.content_main.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
@@ -138,24 +136,25 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
         when (callingClass) {
             context.getString(R.string.MainActivityClassName) -> {
                 val act = context as MainActivity
-                act.contentProgressBar.visibility = View.GONE
                 act.displayCoins(coinList)
             }
             context.getString(R.string.AvailableCryptosActivityClassName) -> {
                 val act = context as AvailableCryptosActivity
-                act.contentProgressBar.visibility = View.GONE
                 act.displayCoins(coinList)
             }
         }
     }
 
 
-    private fun displayPriceGraph(priceList: Array<DataPoint>) {
-        (context as CoinHistoryActivity).displayCoinGraph(priceList)
+    private fun displayPriceGraph(priceList: Array<DataPoint>, priceListArray: JSONArray, today: Boolean) {
+        if (today){
+            (context as CoinHistoryActivity).displayDayCoinGraph(priceList)
+        } else {
+            (context as CoinHistoryActivity).displayCoinGraph(priceList, priceListArray)
+        }
     }
 
     fun loadCoins(cIDList: ArrayList<String>){
-        showProgressBar()
         coinIDList = cIDList
         if (rate == null || (rate!!.lastChanged - (System.currentTimeMillis()/1000)) >= (5 * 60)) {
             GetExchangeRate(this).execute(exchangeCurrencyPair)
@@ -168,24 +167,10 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
     }
 
     fun loadAvailableCoins() {
-        showProgressBar()
         if (rate == null || (rate!!.lastChanged - (System.currentTimeMillis()/1000)) >= (5 * 60)) {
             GetExchangeRate(this).execute(exchangeCurrencyPair)
         } else {
             makeRequest(allCryptoUrl)
-        }
-    }
-
-    private fun showProgressBar() {
-        when (callingClass) {
-            context.getString(R.string.MainActivityClassName) -> {
-                val act = context as MainActivity
-                act.contentProgressBar.visibility = View.VISIBLE
-            }
-            context.getString(R.string.AvailableCryptosActivityClassName) -> {
-                val act = context as AvailableCryptosActivity
-                act.contentProgressBar.visibility = View.VISIBLE
-            }
         }
     }
 
@@ -199,13 +184,9 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
         }
     }
 
-    fun loadCoinGraph(coin: Coin, currencyFormat:String) {
+    fun loadDayCoinGraph(coin: Coin) {
         currentCoin = coin
-        if (rate == null || ((rate!!.lastChanged - (System.currentTimeMillis()/1000)) > (5 * 60))){
-            GetExchangeRate(this).execute(exchangeCurrencyPair)
-        } else {
-            GetHistoricalCoinData(this, currencyFormat).execute(coin.id)
-        }
+        GetHistoricalCoinData(this, true).execute(coin.id)
     }
 
     companion object {
@@ -232,7 +213,7 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
             }
         }
 
-        class GetHistoricalCoinData(private val cryptos: Cryptos, private val currencyFormat: String = "local") : AsyncTask<String, Int, Long>() {
+        class GetHistoricalCoinData(private val cryptos: Cryptos, private val today: Boolean = false) : AsyncTask<String, Int, Long>() {
             private lateinit var priceList: Array<DataPoint>
             private var requestQueue = Volley.newRequestQueue(cryptos.context)
 
@@ -241,10 +222,14 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
                 val totalSize = 0L
 
                 for (i in 0 until count) {
-                    val url = "http://coincap.io/history/${params[i]}"
+                    val url: String = if (today){
+                        "http://coincap.io/history/1day/${params[i]}"
+                    } else {
+                        "http://coincap.io/history/${params[i]}"
+                    }
                     val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null, Response.Listener<JSONObject> { response ->
                         priceList = processHistory(response.get("price") as JSONArray)
-                        cryptos.displayPriceGraph(priceList)
+                        cryptos.displayPriceGraph(priceList, response.get("price") as JSONArray, today)
                     }, Response.ErrorListener { error -> Log.d("Volley Error", error.toString()) })
                     requestQueue.add(jsonObjectRequest)
                     publishProgress((i / count.toFloat() * 100).toInt())
@@ -272,11 +257,8 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
                         else -> historyArray[1] as Double
                     }
 
-                    if (currencyFormat == "local"){
-                        points[i] = DataPoint(histDate, (histPrice * cryptos.rate!!.rate))
-                    } else {
-                        points[i] = DataPoint(histDate, (histPrice))
-                    }
+
+                    points[i] = DataPoint(histDate, (histPrice * cryptos.rate!!.rate))
                 }
 
                 @Suppress("UNCHECKED_CAST")
