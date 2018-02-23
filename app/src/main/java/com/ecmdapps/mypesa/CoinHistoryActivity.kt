@@ -202,6 +202,7 @@ class CoinHistoryActivity : AppCompatActivity() {
         cGraphDay.gridLabelRenderer.numHorizontalLabels = 4
         cGraphDay.gridLabelRenderer.isHumanRounding = false
         cGraphDayTitle.visibility = View.VISIBLE
+
         cGraphDayTitle.setOnClickListener {
             cGraphMax.visibility = View.GONE
             cGraphYear.visibility = View.GONE
@@ -218,6 +219,7 @@ class CoinHistoryActivity : AppCompatActivity() {
             cGraphYearTitle.setTextColor(Color.BLACK)
         }
 
+        cGraphDayTitle.setTextColor(Color.BLUE)
         cGraphDay.visibility = View.VISIBLE
     }
 }

@@ -4,12 +4,16 @@ import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.util.*
+import android.text.Editable
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
         title = getString(R.string.main_activity_title)
         cryptos = Cryptos(this, getString(R.string.MainActivityClassName))
 
@@ -62,6 +67,17 @@ class MainActivity : AppCompatActivity() {
     fun displayCoins(coinList: ArrayList<Coin>) {
         contentProgressBar.visibility = View.GONE
         val coinListAdapter = CoinListAdapter(this, coinList)
+
+        inputSearch.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(cs: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
+                coinListAdapter.filter.filter(cs)
+            }
+
+            override fun beforeTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {}
+
+            override fun afterTextChanged(arg0: Editable) {}
+        })
+
         lvCoins.adapter = coinListAdapter
     }
 

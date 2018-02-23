@@ -24,4 +24,6 @@
     <string name="cGraphMonthTitle">Last Month</string>
     <string name="cGraphQuarterTitle">Last Quarter</string>
     <string name="cGraphYearTitle">Last Year</string>
+    <string name="nTitle">News Item Title</string>
+    <string name="coinFilterHint">Coin Name</string>
 </resources>

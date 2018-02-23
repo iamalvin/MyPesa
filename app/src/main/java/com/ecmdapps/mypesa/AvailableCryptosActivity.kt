@@ -2,6 +2,8 @@ package com.ecmdapps.mypesa
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -38,6 +40,17 @@ class AvailableCryptosActivity : AppCompatActivity() {
     fun displayCoins(coinList: ArrayList<Coin>) {
         contentProgressBar.visibility = View.GONE
         val coinListAdapter = CoinListAdapter(this, coinList)
+
+        inputSearch.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(cs: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
+                coinListAdapter.filter.filter(cs)
+            }
+
+            override fun beforeTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {}
+
+            override fun afterTextChanged(arg0: Editable) {}
+        })
+
         lvCoins.adapter = coinListAdapter
     }
 

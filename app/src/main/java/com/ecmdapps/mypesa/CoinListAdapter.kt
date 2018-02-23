@@ -7,14 +7,43 @@ import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.Button
-import android.widget.TextView
+import android.widget.*
 import java.text.NumberFormat
 import java.util.*
 
-class CoinListAdapter(private val ctx: Context, private val coinList: ArrayList<Coin>) : BaseAdapter() {
+
+class CoinListAdapter(private val ctx: Context, private var coinList: ArrayList<Coin>) : BaseAdapter(), Filterable {
+
     private val a : Activity = ctx as Activity
+    private val ogCoinList = coinList
+
+    override fun getFilter(): Filter {
+
+        return object : Filter() {
+             override fun publishResults(constraint: CharSequence, results: FilterResults) {
+                 @Suppress("UNCHECKED_CAST")
+                 coinList = results.values as ArrayList<Coin>
+                 notifyDataSetChanged()
+            }
+
+            override fun performFiltering(constraint: CharSequence): FilterResults {
+                var cs = constraint
+
+                val results = FilterResults()
+
+                cs = cs.toString().toLowerCase()
+                val filteredCoinList = (0 until ogCoinList.size)
+                        .map { ogCoinList[it] }
+                        .filter { it.name.toLowerCase().contains(cs) }
+
+                results.count = filteredCoinList.size
+                results.values = filteredCoinList
+
+                return results
+            }
+        }
+    }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View?
         val vh: ViewHolder
