@@ -33,4 +33,6 @@ class AvailableCryptosActivity : AppCompatActivity() {
         val coinListAdapter = CoinListAdapter(this, coinList)
         lvCoins.adapter = coinListAdapter
     }
+
+
 }

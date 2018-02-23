@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
         loadMyCoins()
         fab.setOnClickListener { viewAllCrypto() }
-        reloader.setOnClickListener { loadMyCoins() }
     }
 
 
@@ -78,5 +77,10 @@ class MainActivity : AppCompatActivity() {
     private fun viewAllCrypto()  {
         val intent = Intent(this, AvailableCryptosActivity::class.java)
         startActivity(intent)
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        loadMyCoins()
     }
 }
