@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         loadMyCoins()
         fab.setOnClickListener { viewAllCrypto() }
-        refresh.setOnRefreshListener { loadMyCoins() }
+        refresh.setOnRefreshListener { loadMyCoins(); refresh.isRefreshing = false }
     }
 
 

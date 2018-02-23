@@ -16,7 +16,7 @@ class AvailableCryptosActivity : AppCompatActivity() {
         setContentView(R.layout.activity_available_cryptos)
         cryptos = Cryptos(this, getString(R.string.AvailableCryptosActivityClassName))
         loadCoins(savedInstanceState)
-        refresh.setOnRefreshListener { cryptos.loadAvailableCoins() }
+        refresh.setOnRefreshListener { cryptos.loadAvailableCoins(); refresh.isRefreshing = false }
     }
 
     override fun onSaveInstanceState(bundle: Bundle?) {
