@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">My Pesa</string>
     <string name="action_settings">Settings</string>
-    <string name="main_activity_title">Following</string>
-    <string name="action_all_currencies">All Crypto</string>
-    <string name="action_all_currencies_condensed">All</string>
+    <string name="main_activity_title">Market + News Feed</string>
+    <string name="action_all_currencies">Coins</string>
+    <string name="action_all_currencies_condensed">coins</string>
     <string name="cPrice">PriceHolder</string>
     <string name="cTitle">TitleHolder</string>
     <string name="cId">cIdHolder</string>
@@ -17,7 +17,7 @@
     <string name="CoinHistoryActivityClassName">CoinHistoryActivity</string>
     <string name="stopFollowing">Stop Following</string>
     <string name="startFollowing">Follow</string>
-    <string name="action_refresh">Refresh</string>
+    <string name="action_refresh_coins">Refresh Coins</string>
     <string name="cGraphMaxTitle">Max</string>
     <string name="cGraphDayTitle">Last Day</string>
     <string name="cGraphWeekTitle">Last Week</string>
@@ -26,4 +26,7 @@
     <string name="cGraphYearTitle">Last Year</string>
     <string name="nTitle">News Item Title</string>
     <string name="coinFilterHint">Coin Name</string>
+    <string name="nDescription">News Item Description</string>
+    <string name="nSourceName">News Item source Name</string>
+    <string name="action_refresh_news">Refresh News</string>
 </resources>

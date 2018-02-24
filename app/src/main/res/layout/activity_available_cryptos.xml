@@ -10,5 +10,5 @@
         android:layout_height="40dip"
         android:visibility="gone"
         android:id="@+id/contentProgressBar"/>
-    <include layout="@layout/content_main" />
+    <include layout="@layout/content_coins" />
 </android.support.design.widget.CoordinatorLayout>

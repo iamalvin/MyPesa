@@ -19,7 +19,7 @@ class CoinHistoryActivity : AppCompatActivity() {
         super.onCreate(bundle)
         setContentView(R.layout.activity_coin_history)
 
-        val cryptos = Cryptos(this, getString(R.string.CoinHistoryActivityClassName))
+        val cryptos = CryptoSource(this, getString(R.string.CoinHistoryActivityClassName))
 
         val localeCountryCode = "KE"
         val format = NumberFormat.getCurrencyInstance(Locale("", localeCountryCode))

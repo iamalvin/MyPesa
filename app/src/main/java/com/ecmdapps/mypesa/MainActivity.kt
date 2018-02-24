@@ -1,85 +1,37 @@
 package com.ecmdapps.mypesa
 
-import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.TabLayout
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
-import java.util.*
-import android.text.Editable
-
-
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var cryptos: Cryptos
-    private var coinIdList = ArrayList<String>()
+    var mainAdapter : MainAdapter? = null
+    private var mainViewPager: ViewPager? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
         title = getString(R.string.main_activity_title)
-        cryptos = Cryptos(this, getString(R.string.MainActivityClassName))
 
-        loadMyCoins()
-        fab.setOnClickListener { viewAllCrypto() }
-        refresh.setOnRefreshListener { loadMyCoins(); refresh.isRefreshing = false }
+        mainAdapter = MainAdapter(supportFragmentManager)
+        mainViewPager = findViewById(R.id.container)
+        mainViewPager!!.adapter = mainAdapter
+
+        val tabLayout = findViewById<TabLayout>(R.id.tabs)
+        tabLayout.setupWithViewPager(mainViewPager)
+
+        tabLayout.getTabAt(0)!!.setIcon(R.drawable.ic_account_balance_wallet_white_48dp)
+        tabLayout.getTabAt(1)!!.setIcon(R.drawable.ic_rss_feed_white_48dp)
     }
 
-
-    private fun loadMyCoins() {
-        val dbHandler = CoinsDatabaseHandler(this)
-        val cursor = dbHandler.queryAll()
-
-        coinIdList.clear()
-        if (cursor.count > 0) {
-            cursor.moveToFirst()
-            do {
-                val coinId = cursor.getString(cursor.getColumnIndex(CoinsDatabaseHandler.colCoinId))
-                coinIdList.add(coinId)
-            } while (cursor.moveToNext())
-            cursor.close()
-        } else {
-            addEntry(dbHandler, "Bitcoin", "BTC")
-            addEntry(dbHandler, "Ethereum", "ETH")
-            addEntry(dbHandler, "Ripple", "XRP")
-            loadMyCoins()
-        }
-
-        contentProgressBar.visibility = View.VISIBLE
-        cryptos.loadCoins(coinIdList)
-    }
-
-    private fun addEntry(dbHandler: CoinsDatabaseHandler, coinName: String, coinId: String) {
-        val values = ContentValues()
-        values.put(CoinsDatabaseHandler.colCoinName, coinName)
-        values.put(CoinsDatabaseHandler.colCoinId, coinId)
-        dbHandler.insert(values)
-    }
-
-
-    fun displayCoins(coinList: ArrayList<Coin>) {
-        contentProgressBar.visibility = View.GONE
-        val coinListAdapter = CoinListAdapter(this, coinList)
-
-        inputSearch.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(cs: CharSequence, arg1: Int, arg2: Int, arg3: Int) {
-                coinListAdapter.filter.filter(cs)
-            }
-
-            override fun beforeTextChanged(arg0: CharSequence, arg1: Int, arg2: Int, arg3: Int) {}
-
-            override fun afterTextChanged(arg0: Editable) {}
-        })
-
-        lvCoins.adapter = coinListAdapter
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -90,18 +42,14 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> true
             R.id.action_all_currencies -> { viewAllCrypto(); true }
-            R.id.action_refresh -> { loadMyCoins(); true}
+            R.id.action_refresh_coins -> { (mainAdapter!!.getRegisteredFragment(0) as CoinFragment).reload(); true}
+            R.id.action_refresh_news -> { (mainAdapter!!.getRegisteredFragment(1) as NewsFragment).reload(); true}
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun viewAllCrypto()  {
+    fun viewAllCrypto()  {
         val intent = Intent(this, AvailableCryptosActivity::class.java)
         startActivity(intent)
-    }
-
-    public override fun onResume() {
-        super.onResume()
-        loadMyCoins()
     }
 }

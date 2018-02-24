@@ -50,7 +50,7 @@ class CoinListAdapter(private val ctx: Context, private var coinList: ArrayList<
         val dbHandler = CoinsDatabaseHandler(ctx)
 
         if (convertView == null) {
-            view = a.layoutInflater.inflate(R.layout.coin, parent, false)
+            view = a.layoutInflater.inflate(R.layout.item_coin, parent, false)
             vh = ViewHolder(view)
             view.tag = vh
         } else {

@@ -16,7 +16,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class Cryptos (private val context: Context, private val callingClass: String?) {
+class CryptoSource(private val context: Context, private val callingClass: String?) {
     private var coinList = ArrayList<Coin>()
     private var rate : Rate? = null
     private val baseCurrencyApiUrl = "https://free.currencyconverterapi.com/api/v5/convert?q="
@@ -136,7 +136,7 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
         when (callingClass) {
             context.getString(R.string.MainActivityClassName) -> {
                 val act = context as MainActivity
-                act.displayCoins(coinList)
+                (act.mainAdapter!!.getRegisteredFragment(0) as CoinFragment).displayCoins(coinList)
             }
             context.getString(R.string.AvailableCryptosActivityClassName) -> {
                 val act = context as AvailableCryptosActivity
@@ -190,13 +190,13 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
     }
 
     companion object {
-        class GetExchangeRate(private val cryptos: Cryptos) : AsyncTask<String, Int, Long>() {
+        class GetExchangeRate(private val cryptoSource: CryptoSource) : AsyncTask<String, Int, Long>() {
             override fun doInBackground(vararg params: String?): Long {
                 val count = params.size
                 val totalSize = 0L
 
                 for (i in 0 until count) {
-                    cryptos.getUSDKES()
+                    cryptoSource.getUSDKES()
                     publishProgress((i / count.toFloat() * 100).toInt())
                     if (isCancelled) break
                 }
@@ -205,17 +205,17 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
 
             override fun onPostExecute(result: Long?) {
                 super.onPostExecute(result)
-                when (cryptos.callingClass) {
-                    cryptos.context.getString(R.string.MainActivityClassName) -> cryptos.loadCoins(cryptos.coinIDList)
-                    cryptos.context.getString(R.string.AvailableCryptosActivityClassName) -> cryptos.loadAvailableCoins()
-                    cryptos.context.getString(R.string.CoinHistoryActivityClassName) -> cryptos.loadCoinGraph(cryptos.currentCoin)
+                when (cryptoSource.callingClass) {
+                    cryptoSource.context.getString(R.string.MainActivityClassName) -> cryptoSource.loadCoins(cryptoSource.coinIDList)
+                    cryptoSource.context.getString(R.string.AvailableCryptosActivityClassName) -> cryptoSource.loadAvailableCoins()
+                    cryptoSource.context.getString(R.string.CoinHistoryActivityClassName) -> cryptoSource.loadCoinGraph(cryptoSource.currentCoin)
                 }
             }
         }
 
-        class GetHistoricalCoinData(private val cryptos: Cryptos, private val today: Boolean = false) : AsyncTask<String, Int, Long>() {
+        class GetHistoricalCoinData(private val cryptoSource: CryptoSource, private val today: Boolean = false) : AsyncTask<String, Int, Long>() {
             private lateinit var priceList: Array<DataPoint>
-            private var requestQueue = Volley.newRequestQueue(cryptos.context)
+            private var requestQueue = Volley.newRequestQueue(cryptoSource.context)
 
             override fun doInBackground(vararg params: String?): Long {
                 val count = params.size
@@ -229,7 +229,7 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
                     }
                     val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null, Response.Listener<JSONObject> { response ->
                         priceList = processHistory(response.get("price") as JSONArray)
-                        cryptos.displayPriceGraph(priceList, response.get("price") as JSONArray, today)
+                        cryptoSource.displayPriceGraph(priceList, response.get("price") as JSONArray, today)
                     }, Response.ErrorListener { error -> Log.d("Volley Error", error.toString()) })
                     requestQueue.add(jsonObjectRequest)
                     publishProgress((i / count.toFloat() * 100).toInt())
@@ -258,7 +258,7 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
                     }
 
 
-                    points[i] = DataPoint(histDate, (histPrice * cryptos.rate!!.rate))
+                    points[i] = DataPoint(histDate, (histPrice * cryptoSource.rate!!.rate))
                 }
 
                 @Suppress("UNCHECKED_CAST")
@@ -266,9 +266,9 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
             }
         }
 
-        class GetCoins(private  val cryptos: Cryptos): AsyncTask<String, Int, Long>() {
+        class GetCoins(private  val cryptoSource: CryptoSource): AsyncTask<String, Int, Long>() {
             private val coinList = ArrayList<Coin> ()
-            private var requestQueue = Volley.newRequestQueue(cryptos.context)
+            private var requestQueue = Volley.newRequestQueue(cryptoSource.context)
 
             override fun doInBackground(vararg params: String): Long {
                 val count = params.size
@@ -283,7 +283,7 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
                         publishProgress((i / count.toFloat() * 100).toInt())
                         if (isCancelled) break
                     }
-                    cryptos.displayCoinList(coinList)
+                    cryptoSource.displayCoinList(coinList)
                 }, Response.ErrorListener { error -> Log.d("Volley Error", error.toString()) })
                 requestQueue.add(jsonArrayRequest)
                 return totalSize
@@ -294,7 +294,7 @@ class Cryptos (private val context: Context, private val callingClass: String?) 
                 for (i in 0 until response?.length()!!){
                     val myCoin = response.getJSONObject(i)
                     if (myCoin["short"] == coinID){
-                        coin = cryptos.getCoin(myCoin)
+                        coin = cryptoSource.getCoin(myCoin)
                         break
                     }
                 }

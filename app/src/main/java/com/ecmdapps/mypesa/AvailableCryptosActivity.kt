@@ -8,19 +8,19 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_available_cryptos.*
-import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.content_coins.*
 import java.util.*
 
 class AvailableCryptosActivity : AppCompatActivity() {
     private var coinList = ArrayList<Coin>()
-    private lateinit var cryptos: Cryptos
+    private lateinit var cryptoSource: CryptoSource
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_available_cryptos)
-        cryptos = Cryptos(this, getString(R.string.AvailableCryptosActivityClassName))
+        cryptoSource = CryptoSource(this, getString(R.string.AvailableCryptosActivityClassName))
         loadCoins(savedInstanceState)
-        refresh.setOnRefreshListener { cryptos.loadAvailableCoins(); refresh.isRefreshing = false }
+        refresh.setOnRefreshListener { cryptoSource.loadAvailableCoins(); refresh.isRefreshing = false }
     }
 
     override fun onSaveInstanceState(bundle: Bundle?) {
@@ -34,7 +34,7 @@ class AvailableCryptosActivity : AppCompatActivity() {
             displayCoins(cl)
         }
         contentProgressBar.visibility = View.VISIBLE
-        cryptos.loadAvailableCoins()
+        cryptoSource.loadAvailableCoins()
     }
 
     fun displayCoins(coinList: ArrayList<Coin>) {
@@ -62,7 +62,7 @@ class AvailableCryptosActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> true
-            R.id.action_refresh -> { cryptos.loadAvailableCoins(); true}
+            R.id.action_refresh_coins -> { cryptoSource.loadAvailableCoins(); true}
             else -> super.onOptionsItemSelected(item)
         }
     }
