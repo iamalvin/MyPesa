@@ -83,32 +83,32 @@
         </LinearLayout>
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="400dp"
             android:id="@+id/cGraphDay"
             android:visibility="gone" />
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="400dp"
             android:id="@+id/cGraphWeek"
             android:visibility="gone" />
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="400dp"
             android:id="@+id/cGraphMonth"
             android:visibility="gone" />
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="400dp"
             android:id="@+id/cGraphQuarter"
             android:visibility="gone" />
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="400dp"
             android:id="@+id/cGraphYear"
             android:visibility="gone" />
         <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="400dp"
             android:id="@+id/cGraphMax"
             android:visibility="gone" />
         <LinearLayout
