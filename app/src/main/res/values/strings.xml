@@ -30,5 +30,6 @@
     <string name="nSourceName">News Item source Name</string>
     <string name="action_refresh_news">Refresh News</string>
     <string name="action_change_currency">Change Currency</string>
-    <string name="countryPreference">testCountry3</string>
+    <string name="countryPreference">selectedCountry</string>
+    <string name="sharedPreferencesFile">com.ecmdapps.mypesa.prefs</string>
 </resources>

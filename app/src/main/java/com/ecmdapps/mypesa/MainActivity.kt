@@ -8,12 +8,10 @@ import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
@@ -38,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         tabLayout.getTabAt(0)!!.setIcon(R.drawable.ic_account_balance_wallet_white_48dp)
         tabLayout.getTabAt(1)!!.setIcon(R.drawable.ic_rss_feed_white_48dp)
 
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        val sharedPref = getSharedPreferences(getString(R.string.sharedPreferencesFile), Context.MODE_PRIVATE)
         val setCountry = sharedPref.getString(getString(R.string.countryPreference), "")
         if (setCountry == ""){
             showCurrencySelector()
@@ -77,8 +75,6 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("ApplySharedPref")
     private fun showCurrencySelector(){
         val locales : Array<Locale> = Locale.getAvailableLocales()
-        val currencies = ArrayList<String>()
-        val currencyNames = ArrayList<String>()
         val currencyMap = HashMap<String, String>()
 
         for (i in 0 until locales.size){
@@ -86,28 +82,22 @@ class MainActivity : AppCompatActivity() {
                 val locale = locales[i]
                 val currency = Currency.getInstance(locale).currencyCode
                 val country = locale.displayCountry
-                currencies.add("$currency - $country")
-                currencyNames.add(currency)
-                currencyMap[currency] = locale.country
+                val currencyLabel = "$currency - $country"
+                currencyMap[currencyLabel] = locale.country
             } catch(e: Exception) {
                 continue
             }
         }
 
-        Log.d("currency map", currencyMap.toString())
-        @Suppress("UNCHECKED_CAST")
-        val currencyArray =  arrayOfNulls<String>(currencies.size)
-        for (i in 0 until currencies.size){
-            currencyArray[i] = currencies[i]
-        }
+        val finalCurrencyArray = currencyMap.keys.toTypedArray()
+        Arrays.sort(finalCurrencyArray)
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select Currency")
 
-        builder.setItems(currencyArray, { dialog, which ->
-            val selectedCountry = currencyMap[currencyNames[which]]
-            Log.d("selected country", selectedCountry)
-            val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        builder.setItems(finalCurrencyArray, { dialog, which ->
+            val selectedCountry = currencyMap[finalCurrencyArray[which]]
+            val sharedPref = getSharedPreferences(getString(R.string.sharedPreferencesFile), Context.MODE_PRIVATE)
             val editor = sharedPref.edit()
             editor.putString(getString(R.string.countryPreference), selectedCountry)
             editor.commit()

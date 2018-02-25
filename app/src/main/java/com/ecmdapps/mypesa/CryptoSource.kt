@@ -41,7 +41,7 @@ class CryptoSource(private val context: Context, private val callingClass: Strin
     }
 
     private fun getLocalCountryCode() : String {
-        val sharedPref = (context as Activity).getPreferences(Context.MODE_PRIVATE)
+        val sharedPref = (context as Activity).getSharedPreferences(context.getString(R.string.sharedPreferencesFile), Context.MODE_PRIVATE)
         return sharedPref.getString(context.getString(R.string.countryPreference), "US")
     }
 

@@ -119,7 +119,7 @@ class CoinListAdapter(private val ctx: Context, private var coinList: ArrayList<
     }
 
     private fun getLocalCountryCode() : String {
-        val sharedPref = (ctx as Activity).getPreferences(Context.MODE_PRIVATE)
+        val sharedPref = (ctx as Activity).getSharedPreferences(ctx.getString(R.string.sharedPreferencesFile), Context.MODE_PRIVATE)
         return sharedPref.getString(ctx.getString(R.string.countryPreference), "US")
     }
 

@@ -35,7 +35,7 @@ class CoinHistoryActivity : AppCompatActivity() {
     }
 
     private fun getLocalCountryCode() : String {
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        val sharedPref = getSharedPreferences(getString(R.string.sharedPreferencesFile), Context.MODE_PRIVATE)
         return sharedPref.getString(getString(R.string.countryPreference), "US")
     }
 
