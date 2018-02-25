@@ -58,7 +58,7 @@ class CoinListAdapter(private val ctx: Context, private var coinList: ArrayList<
             vh = view.tag as ViewHolder
         }
 
-        val localeCountryCode = "KE"
+        val localeCountryCode = getLocalCountryCode()
         val format = NumberFormat.getCurrencyInstance(Locale("", localeCountryCode))
         val percFormat = NumberFormat.getPercentInstance(Locale("", localeCountryCode))
 
@@ -116,6 +116,11 @@ class CoinListAdapter(private val ctx: Context, private var coinList: ArrayList<
 
     override fun getCount(): Int {
         return coinList.size
+    }
+
+    private fun getLocalCountryCode() : String {
+        val sharedPref = (ctx as Activity).getPreferences(Context.MODE_PRIVATE)
+        return sharedPref.getString(ctx.getString(R.string.countryPreference), "US")
     }
 
     class ViewHolder(view: View?){

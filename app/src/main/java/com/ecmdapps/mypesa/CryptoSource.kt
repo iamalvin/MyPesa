@@ -1,5 +1,6 @@
 package com.ecmdapps.mypesa
 
+import android.app.Activity
 import android.content.Context
 import android.os.AsyncTask
 import android.util.Log
@@ -25,16 +26,23 @@ class CryptoSource(private val context: Context, private val callingClass: Strin
 
     private var requestQueue = Volley.newRequestQueue(context)
     private var usdCurrencyCode: String = "USD"
-    private var localeCountryCode : String = "KE"
-    private var localeCurrencyCode : String = Currency.getInstance(Locale("", localeCountryCode)).currencyCode
-    private var exchangeCurrencyPair : String =  "${usdCurrencyCode}_$localeCurrencyCode"
-    private var currencyApiUrl : String = "$baseCurrencyApiUrl$exchangeCurrencyPair"
 
     private lateinit var currentCoin : Coin
     private lateinit var coinIDList : ArrayList<String>
 
     private fun getCurrencyApiUrl () : String {
-        return currencyApiUrl
+        val exchangeCurrencyPair = getExchangeCurrencyPair()
+        return "$baseCurrencyApiUrl$exchangeCurrencyPair"
+    }
+
+    private fun getExchangeCurrencyPair () : String {
+        val localeCurrencyCode: String = Currency.getInstance(Locale("", getLocalCountryCode())).currencyCode
+        return "${usdCurrencyCode}_$localeCurrencyCode"
+    }
+
+    private fun getLocalCountryCode() : String {
+        val sharedPref = (context as Activity).getPreferences(Context.MODE_PRIVATE)
+        return sharedPref.getString(context.getString(R.string.countryPreference), "US")
     }
 
     private fun makeRequest(url: String){
@@ -56,9 +64,9 @@ class CryptoSource(private val context: Context, private val callingClass: Strin
     private fun getUSDKES() {
         val currencyListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                rate = dataSnapshot.child(exchangeCurrencyPair).getValue(Rate::class.java)
+                rate = dataSnapshot.child(getExchangeCurrencyPair()).getValue(Rate::class.java)
                 if (rate == null || ((rate!!.lastChanged - (System.currentTimeMillis()/1000)) > (30 * 60))){
-                    makeRequest(currencyApiUrl)
+                    makeRequest(getCurrencyApiUrl())
                 } else {
                     return
                 }
@@ -71,7 +79,7 @@ class CryptoSource(private val context: Context, private val callingClass: Strin
     }
 
     private fun setKESVal(response: JSONObject?) {
-        val cur : JSONObject? = response?.getJSONObject("results")?.getJSONObject(exchangeCurrencyPair)
+        val cur : JSONObject? = response?.getJSONObject("results")?.getJSONObject(getExchangeCurrencyPair())
         val ku : Any? = cur?.get("val")
         val to = cur?.getString("to")
         val from = cur?.getString("fr")
@@ -83,9 +91,9 @@ class CryptoSource(private val context: Context, private val callingClass: Strin
             else -> 1.000
         }
         rate = Rate(exchange, to!!, from!!, lastChanged)
-        cDB.child(exchangeCurrencyPair).setValue(rate)
-        cDB.child(exchangeCurrencyPair).child("lastChanged").setValue((System.currentTimeMillis() / 1000L))
-        cDB.child(exchangeCurrencyPair).child("rate").setValue(rate!!.rate)
+        cDB.child(getExchangeCurrencyPair()).setValue(rate)
+        cDB.child(getExchangeCurrencyPair()).child("lastChanged").setValue((System.currentTimeMillis() / 1000L))
+        cDB.child(getExchangeCurrencyPair()).child("rate").setValue(rate!!.rate)
     }
 
     private fun processCoins(response: JSONArray): ArrayList<Coin> {
@@ -157,7 +165,7 @@ class CryptoSource(private val context: Context, private val callingClass: Strin
     fun loadCoins(cIDList: ArrayList<String>){
         coinIDList = cIDList
         if (rate == null || (rate!!.lastChanged - (System.currentTimeMillis()/1000)) >= (5 * 60)) {
-            GetExchangeRate(this).execute(exchangeCurrencyPair)
+            GetExchangeRate(this).execute(getExchangeCurrencyPair())
         } else {
             val nullCIDList : Array<String?> = arrayOfNulls(coinIDList.size)
             @Suppress("UNCHECKED_CAST")
@@ -168,7 +176,7 @@ class CryptoSource(private val context: Context, private val callingClass: Strin
 
     fun loadAvailableCoins() {
         if (rate == null || (rate!!.lastChanged - (System.currentTimeMillis()/1000)) >= (5 * 60)) {
-            GetExchangeRate(this).execute(exchangeCurrencyPair)
+            GetExchangeRate(this).execute(getExchangeCurrencyPair())
         } else {
             makeRequest(allCryptoUrl)
         }
@@ -178,7 +186,7 @@ class CryptoSource(private val context: Context, private val callingClass: Strin
     fun loadCoinGraph(coin: Coin) {
         currentCoin = coin
         if (rate == null || ((rate!!.lastChanged - (System.currentTimeMillis()/1000)) > (5 * 60))){
-            GetExchangeRate(this).execute(exchangeCurrencyPair)
+            GetExchangeRate(this).execute(getExchangeCurrencyPair())
         } else {
             GetHistoricalCoinData(this).execute(coin.id)
         }

@@ -1,8 +1,9 @@
 package com.ecmdapps.mypesa
 
+import android.content.Context
 import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter
 import com.jjoe64.graphview.series.DataPoint
@@ -21,7 +22,7 @@ class CoinHistoryActivity : AppCompatActivity() {
 
         val cryptos = CryptoSource(this, getString(R.string.CoinHistoryActivityClassName))
 
-        val localeCountryCode = "KE"
+        val localeCountryCode = getLocalCountryCode()
         val format = NumberFormat.getCurrencyInstance(Locale("", localeCountryCode))
 
         val coin : Coin = intent.getParcelableExtra("coin")
@@ -31,6 +32,11 @@ class CoinHistoryActivity : AppCompatActivity() {
         cryptos.loadCoinGraph(coin)
         cryptos.loadDayCoinGraph(coin)
         title = coin.name
+    }
+
+    private fun getLocalCountryCode() : String {
+        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        return sharedPref.getString(getString(R.string.countryPreference), "US")
     }
 
     fun displayCoinGraph(priceList: Array<DataPoint>, priceListArray: JSONArray) {

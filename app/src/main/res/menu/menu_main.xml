@@ -10,20 +10,25 @@
 
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="98"
+        android:orderInCategory="90"
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_refresh_news"
+        android:orderInCategory="91"
+        app:showAsAction="never"
+        android:title="@string/action_refresh_news" />
+
+    <item
         android:id="@+id/action_refresh_coins"
-        android:orderInCategory="100"
+        android:orderInCategory="92"
         app:showAsAction="never"
         android:title="@string/action_refresh_coins" />
 
     <item
-        android:id="@+id/action_refresh_news"
-        android:orderInCategory="99"
+        android:id="@+id/action_change_currency"
+        android:orderInCategory="100"
         app:showAsAction="never"
-        android:title="@string/action_refresh_news" />
-
+        android:title="@string/action_change_currency" />
 </menu>

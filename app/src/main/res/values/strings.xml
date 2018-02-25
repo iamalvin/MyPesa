@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">My Pesa</string>
     <string name="action_settings">Settings</string>
-    <string name="main_activity_title">Market + News Feed</string>
+    <string name="main_activity_title">Crypto Market + News Feed</string>
     <string name="action_all_currencies">Coins</string>
     <string name="action_all_currencies_condensed">coins</string>
     <string name="cPrice">PriceHolder</string>
@@ -29,4 +29,6 @@
     <string name="nDescription">News Item Description</string>
     <string name="nSourceName">News Item source Name</string>
     <string name="action_refresh_news">Refresh News</string>
+    <string name="action_change_currency">Change Currency</string>
+    <string name="countryPreference">testCountry3</string>
 </resources>
