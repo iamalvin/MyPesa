@@ -5,4 +5,4 @@ It also receives a cryptocurrency news feed, so as to keep informed
 
 Imlements graphs to view con history
 
-Can be found at (The Google Play Store)[https://play.google.com/store/apps/details?id=com.ecmdapps.mypesa]
+Can be found at [The Google Play Store](https://play.google.com/store/apps/details?id=com.ecmdapps.mypesa)
